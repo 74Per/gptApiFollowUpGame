@@ -1,5 +1,5 @@
 import openai
-openai.api_key = "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"
+openai.api_key = "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"
 messages=[]
 while True:
     user_content = input("user : ")
