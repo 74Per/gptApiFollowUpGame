@@ -1,4 +1,3 @@
-import os
 import openai
 openai.api_key = "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"
 messages=[]
