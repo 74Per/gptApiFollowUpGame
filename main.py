@@ -1,5 +1,5 @@
 import openai
-openai.api_key = "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"
+openai.api_key = "API 뽑아서 쓰기"
 messages=[]
 while True:
     user_content = input("user : ")
