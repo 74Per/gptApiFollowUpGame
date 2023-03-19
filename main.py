@@ -1,30 +1,42 @@
-# module import
-# python3 -m pip install openai
-
 import openai
-import json
+import key
+import dict_check
 
-# OpenAI API 키 설정
-openai.api_key = "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"
+openai.api_key = key.KEY
 
-# API 요청 보내기
-def generate_text(prompt):
-    response = openai.Completion.create(
-        engine="davinci", # GPT 모델의 엔진 이름
-        prompt=prompt, # 대화 시작 문장
-        max_tokens=60, # 생성할 텍스트의 최대 길이
-        n=1, # 생성할 텍스트의 개수
-        stop=None, # 생성할 텍스트의 종료 조건
-        temperature=0.7, # 다양한 출력을 생성하기 위한 온도 매개변수
-    )
-    message = response.choices[0].text.strip()
-    return message
+model = dict_check.model
 
-# 대화 생성 예제
+query = '''
+로 시작하는 단어 하나 말해줘(동사금지, 단어만 말하기, 단어 뒤에 마침표 쓰지 않기).
+
+'''
+
+rule = '''
+person
+'''
+
 while True:
-    prompt = input("You: ")
-    prompt = prompt[-1]
-    prompt = "'" + prompt + "'"
-    prompt += "로 시작하는 2글자 단어 하나 알려줘"
-    response = generate_text(prompt)
-    print("AI: " + response)
+    user_content = input("user : ")
+    res = dict_check.dict(user_content)
+    print(res)
+    if  res == False:
+        print("없는단어입니다. 컴퓨터의 승리입니다.")
+        break
+    user_content = user_content[-1]
+    user_lastword = user_content
+    # print(user_content)
+    user_content+=query
+    messages = [
+        {"role" : "system", "content" : rule},
+        {"role" : "user", "content" : f"{user_content}"}
+    ]
+
+
+    completion = openai.ChatCompletion.create(model=model, messages=messages)
+    assistant_content = completion.choices[0].message["content"].strip()
+    messages.append({"role" : "user", "content" : f"{user_content}"})
+    print(f"GPT : {assistant_content}")
+
+    if user_lastword !=assistant_content[0]:
+        print("당신이 이겼습니다 축하합니다.")
+        break
