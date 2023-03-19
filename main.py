@@ -40,3 +40,4 @@ while True:
     if user_lastword !=assistant_content[0]:
         print("당신이 이겼습니다 축하합니다.")
         break
+
