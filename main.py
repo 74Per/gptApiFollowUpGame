@@ -2,13 +2,14 @@ import openai
 import key
 import dict_check
 
+
 openai.api_key = key.KEY
 
-model = dict_check.model
+model = "gpt-3.5-turbo"
 
 query = '''
-로 시작하는 단어 하나 말해줘(동사금지, 단어만 말하기, 단어 뒤에 마침표 쓰지 않기).
-
+로 시작하는 단어 하나 말해줘.
+동사금지, 마침표 쓰지 않기, 단어만 말하기
 '''
 
 rule = '''
@@ -17,7 +18,7 @@ person
 
 while True:
     user_content = input("user : ")
-    res = dict_check.dict(user_content)
+    res = dict_check.solution(user_content)
     print(res)
     if  res == False:
         print("없는단어입니다. 컴퓨터의 승리입니다.")
